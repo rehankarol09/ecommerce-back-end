@@ -1,14 +1,15 @@
 
 const express = require('express');
+const router = express.Router();
+const { validationResult } = require('express-validator');
 const { sign } = require('jsonwebtoken');
-const { signup, sigin } = require('../controller/auth');
-const router=express.Router();
-//const User = require('../models/user');
+const { signup, signin } = require('../controller/auth');
+const { validateSignupRequest, isRequestValidated, validateSigninRequest } = require('../Validators/auth');
 
 
-router.post('/signup',signup);
+router.post('/signup',validateSignupRequest,isRequestValidated,signup);
 
-router.post('/signin',sigin);
+router.post('/signin',validateSigninRequest,isRequestValidated,signin);
 
 
 
