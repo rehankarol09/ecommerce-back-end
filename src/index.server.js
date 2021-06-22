@@ -8,6 +8,8 @@ const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const adminauthRoutes = require('./routes/admin/auth');
 const CategoryRoutes = require('./routes/category');
+const ProductRoutes = require('./routes/product');
+const CartRoutes = require('./routes/cart');
 
 
 
@@ -25,20 +27,19 @@ mongoose.connect(`mongodb+srv://${process.env.Mongo_db_user}:${process.env.Mongo
 
 
 
-
+app.use(express.json());
 app.use('/api',authRoutes);
 app.use('/api',adminauthRoutes);
 app.use('/api',CategoryRoutes);
+app.use('/api',ProductRoutes);
+app.use('/api',CartRoutes);
 
 
-app.use(express.json());
 
-app.listen(process.env.PORT,()=>{
 
- console.log(`Server is running on ${process.env.PORT}`);
-
-});
-
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running on port ${process.env.PORT}`);
+  });
 
 
 

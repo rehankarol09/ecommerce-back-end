@@ -9,14 +9,8 @@ const { isRequestValidated, validateSignupRequest, validateSigninRequest } = req
 
 
 router.post('/admin/signup', validateSignupRequest,isRequestValidated,signup);
-
 router.post('/admin/signin',validateSigninRequest,isRequestValidated, signin);
 
-/*router.post('/admin/profile',requiresignin,(req,res)=>{
-    res.status(400).json({
-      user:"profile"
-    });
-});*/
 
 
 module.exports = router;
