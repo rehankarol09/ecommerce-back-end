@@ -34,7 +34,7 @@ exports.signup=(req,res)=>{
             }
             if (data) {
                 return res.status(201).json({
-                    message:"User created successfully"
+                    message:"Admin created successfully"
                 });
             }
 
