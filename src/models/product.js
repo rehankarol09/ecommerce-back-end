@@ -21,6 +21,7 @@ const productSchema = new mongoose.Schema(
         required:true
      },
      offer:{type:Number},
+     
      productpictures:[
          {
              img:{type:String}

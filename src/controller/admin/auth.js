@@ -1,9 +1,10 @@
 const User = require('../../models/user');
 const jwt=require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 exports.signup=(req,res)=>{
 
     User.findOne({ email: req.body.email })
-    .exec((error, user) => {
+    .exec(async (error, user) => {
         if (user) return res.status(400).json({
 
             message: "Admin already registered"
@@ -16,12 +17,13 @@ exports.signup=(req,res)=>{
             password
         } = req.body;
         
-    
+    const hash_password = await bcrypt.hash(password,10);
+
         const _user = new User({
             firstname,
             lastname,
             email,
-            password,
+            hash_password,
             username: Math.random().toString().toString(),
             role:"admin"
 
@@ -56,7 +58,8 @@ exports.signin = (req, res) => {
 
             if (user) {
                 if (user.authenthicate(req.body.password) && user.role=='admin') {
-                    const token = jwt.sign({ _id: user._id,role:user.role }, process.env.Jwt_Secret, { expiresIn: "1h" });
+                    const token = jwt.sign({ _id: user._id,role:user.role }, process.env.Jwt_Secret, { expiresIn: "1d" });
+                    res.cookie('token',token,{expiresIn:'1d'});
                     const {_id, firstname, lastname, email, role, fullname } = user;
                     res.status(200).json({
 
@@ -71,16 +74,20 @@ exports.signin = (req, res) => {
                         message: "Invalid password"
                     });
                 }
-
             }
             else {
                 return res.status(400).json({
                     message: "User not found"
-
                 });
             }
         });
+}
 
-
+exports.signout = (req,res) =>
+{
+    res.clearCookie('token');
+    res.status(200).json({
+         message:"Signout successfuly "
+    });
 }
 

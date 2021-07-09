@@ -45,7 +45,7 @@ exports.AddCategory = (req, res) => {
 
     const cat = new Category(categoryObj);
     cat.save((error, category) => {
-        if (error) return res.status(200).json({ error });
+        if (error) return res.status(400).json({ error });
 
         if (category) {
 
@@ -62,7 +62,7 @@ exports.getCategory = (req, res) => {
     try {
         Category.find({})
             .exec((error, category) => {
-                if (error) return res.status(200).json({ error });
+                if (error) return res.status(400).json({ error });
 
                 if (category) {
                     const categorylist = createCategories(category);

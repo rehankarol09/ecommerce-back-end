@@ -11,7 +11,8 @@ exports.createProduct = (req, res) => {
         description,
         category,
         createdby,
-        quantity
+        quantity,
+        slug
         
     } = req.body;
     
@@ -33,12 +34,11 @@ exports.createProduct = (req, res) => {
         category: category,
         createdby: req.user._id,
         productpictures,
-        quantity
+        quantity:quantity
     });
 
     product.save((error,product)=>{
        if(error) return res.status(400).json({error})
-
        if(product)
        {
            res.status(200).json({
