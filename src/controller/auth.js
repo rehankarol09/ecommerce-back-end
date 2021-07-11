@@ -1,6 +1,7 @@
 const User = require('../models/user');
 const jwt=require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const shortid = require('shortid');
 exports.signup=(req,res)=>{
 
     User.findOne({ email: req.body.email })
@@ -22,8 +23,8 @@ exports.signup=(req,res)=>{
             firstname,
             lastname,
             email,
-            password,
-            username: Math.random().toString()
+            hash_password,
+            username: shortid.generate()
         });
 
         _user.save((error, data) => {
@@ -53,12 +54,12 @@ exports.signin = (req, res) => {
             if (user) {
                 if (user.authenthicate(req.body.password) && user.role == 'user') {
                     const token = jwt.sign({ _id: user._id, role:user.role }, process.env.Jwt_Secret, { expiresIn: "1h" });
-                    const {_id, firstname, lastname, email, role, fullname } = user;
+                    const {_id, firstname, lastname, email, role, fullname,username } = user;
                     res.status(200).json({
 
                         token,
                         user: {
-                            _id,firstname, lastname, email, role, fullname
+                            _id,firstname, lastname, email, role, username, fullname
                         }
                     });
                 }
