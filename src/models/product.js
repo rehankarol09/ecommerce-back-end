@@ -24,7 +24,8 @@ const productSchema = new mongoose.Schema(
      
      productpictures:[
          {
-             img:{type:String}
+             img:{type:String,required:true},
+             
          }
      ],
      reviews:[

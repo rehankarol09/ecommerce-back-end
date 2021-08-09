@@ -13,6 +13,7 @@ const CategoryRoutes = require('./routes/category');
 const ProductRoutes = require('./routes/product');
 const CartRoutes = require('./routes/cart');
 const initialDataRoutes  = require('./routes/admin/initialData');
+const PageRoutes = require('./routes/admin/Page');
 
 
 
@@ -22,7 +23,8 @@ mongoose.connect(`mongodb+srv://${process.env.Mongo_db_user}:${process.env.Mongo
 {
     useNewUrlParser:true,
     useUnifiedTopology:true,
-    useCreateIndex:true
+    useCreateIndex:true,
+    useFindAndModify: false 
 
 }).then(()=>{
     console.log("Database Connected");
@@ -38,7 +40,8 @@ app.use('/api',adminauthRoutes);
 app.use('/api',CategoryRoutes);
 app.use('/api',ProductRoutes);
 app.use('/api',CartRoutes);
-app.use('/api',initialDataRoutes)
+app.use('/api',initialDataRoutes);
+app.use('/api',PageRoutes);
 
 
 

@@ -15,11 +15,17 @@ const CategorySchema = new mongoose.Schema({
         type: String
     },
     parentId: {
-        type: String,
-        required: false
-
-
+        type: String
+    },
+    type:{
+        type:String
+    },
+    createdBy:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User",
+        required:true
     }
-}, { timestamps: true });
+        
+    }, { timestamps: true });
 
-module.exports = mongoose.model('Category', CategorySchema)
+module.exports = mongoose.model('Category', CategorySchema);

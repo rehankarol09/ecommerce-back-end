@@ -2,12 +2,11 @@ const User = require('../../models/user');
 const jwt=require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const shortid = require('shortid');
-exports.signup=(req,res)=>{
 
+exports.signup=(req,res)=>{
     User.findOne({ email: req.body.email })
     .exec(async (error, user) => {
         if (user) return res.status(400).json({
-
             message: "Admin already registered"
         });
 
@@ -29,6 +28,7 @@ exports.signup=(req,res)=>{
             role:"admin"
 
         });
+
         _user.save((error, data) => {
             if (error) {
                 return res.status(400).json({
@@ -50,22 +50,18 @@ exports.signup=(req,res)=>{
 
 
 exports.signin = (req, res) => {
-
     User.findOne({ email: req.body.email })
         .exec((error, user) => {
-
             if (error) return res.status(400).json({ error });
-
             if (user) {
-                if (user.authenthicate(req.body.password) && user.role=='admin') {
-                    const token = jwt.sign({ _id: user._id,role:user.role }, process.env.Jwt_Secret, { expiresIn: "1d" });
-                    res.cookie('token',token,{expiresIn:'1d'});
-                    const {_id, firstname, lastname, email, role, fullname } = user;
+                if (user.authenthicate(req.body.password) && user.role == 'admin') {
+                    const token = jwt.sign({ _id: user._id, role: user.role }, process.env.Jwt_Secret, { expiresIn: "1d" });
+                    res.cookie('token', token, { expiresIn: '1d' });
+                    const { _id, firstname, lastname, email, role, fullname } = user;
                     res.status(200).json({
-
                         token,
                         user: {
-                            _id,firstname, lastname, email, role, fullname
+                            _id, firstname, lastname, email, role, fullname
                         }
                     });
                 }

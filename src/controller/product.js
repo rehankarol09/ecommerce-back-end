@@ -1,10 +1,9 @@
 const Product = require('../models/product');
 const shortid = require('shortid');
 const slugify = require('slugify');
+const Category = require('../models/category');
 
 exports.createProduct = (req, res) => {
-    
-
     const {
         name,
         price,
@@ -12,8 +11,7 @@ exports.createProduct = (req, res) => {
         category,
         createdby,
         quantity,
-        slug
-        
+        slug      
     } = req.body;
     
 
@@ -23,7 +21,6 @@ exports.createProduct = (req, res) => {
         productpictures=req.files.map(file=>{
             return {img:file.filename}
         });
-
     }
 
     const product = new Product({
@@ -49,4 +46,33 @@ exports.createProduct = (req, res) => {
     });
 }
 
+exports.getAllProductsBySlug = (req, res) => {
+    const { slug } = req.params;
+    Category.findOne({ slug: slug })
+        .select('_id')
+        .exec((error, category) => {
+            if (error) return res.status(400).json({ error });
+            //else return res.status(200).json({ category });
+            if (category) {
+                Product.find({ category: category._id })
+                    .exec((error, product) => {
+                        if (error) return res.status(400).json({ error });
+                        res.status(200).json({
+                            product,
+                            productsbyprice: {
+                                Under5k: product.filter(product => product.price <= 5000),
+                                Under10k: product.filter(product => product.price <= 10000 && product.price > 5000),
+                                Under20k: product.filter(product => product.price > 10000 && product.price <= 20000),
+                                Under25k: product.filter(product => product.price > 20000 && product.price <= 25000),
+                                Under30k: product.filter(product => product.price > 25000 && product.price <= 30000),
+                            }
+                        })
+
+                    })
+            }
+
+        }
+
+        );
+}
 
