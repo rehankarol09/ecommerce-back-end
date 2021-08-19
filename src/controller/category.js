@@ -32,7 +32,8 @@ exports.AddCategory = (req, res) => {
     const categoryObj = {
         name: req.body.name,
         slug: `${slugify(req.body.name)}-${shortid.generate()}`,
-        createdBy:req.user._id
+        createdBy:req.user._id,
+        
     }
 
     if(req.file){
@@ -42,6 +43,10 @@ exports.AddCategory = (req, res) => {
 
     if (req.body.parentId) {
         categoryObj.parentId = req.body.parentId
+    }
+    if(req.body.type)
+    {
+        categoryObj.type = req.body.type
     }
 
     const cat = new Category(categoryObj);

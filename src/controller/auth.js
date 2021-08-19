@@ -46,7 +46,7 @@ exports.signup=(req,res)=>{
 
 exports.signin = (req, res) => {
 
-    User.findOne({ email: req.body.email })
+    User.findOne({ email: req.body.email,role:'user'})
         .exec((error, user) => {
 
             if (error) return res.status(400).json({ error });

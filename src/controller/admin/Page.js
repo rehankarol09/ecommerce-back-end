@@ -53,7 +53,7 @@ exports.createPage = (req, res) => {
 exports.getPage = (req, res) =>
 {
     const {category,type} = req.params;
-    if(type === 'page')
+    if(type === 'Page')
     {
         Page.findOne({category:category})
         .exec((error,page)=>{
