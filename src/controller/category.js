@@ -36,7 +36,7 @@ exports.AddCategory = (req, res) => {
     }
 
     if(req.file){
-        categoryObj.CategoryImage = process.env.API +'/public/'+ req.file.filename
+        categoryObj.CategoryImage = process.env.IMAGE_HOST +'/public/'+ req.file.filename
     }
 
 

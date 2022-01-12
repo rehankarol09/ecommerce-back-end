@@ -19,12 +19,12 @@ const PageRoutes = require('./routes/admin/Page');
 
 env.config();
 
-mongoose.connect(`mongodb+srv://${process.env.Mongo_db_user}:${process.env.Mongo_db_password}@cluster0.oonmb.mongodb.net/${process.env.Mongo_db_database}?retryWrites=true&w=majority`,
+mongoose.connect(`mongodb+srv://${process.env.Mongo_username}:${process.env.Mongo_password}@cluster0.svxbn.mongodb.net/${process.env.Mongo_db_database}?retryWrites=true&w=majority`,
 {
     useNewUrlParser:true,
     useUnifiedTopology:true,
     useCreateIndex:true,
-    useFindAndModify: false 
+    useFindAndModify:false
 
 }).then(()=>{
     console.log("Database Connected");

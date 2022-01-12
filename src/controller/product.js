@@ -11,15 +11,14 @@ exports.createProduct = (req, res) => {
         category,
         createdby,
         quantity,
-        slug      
+        slug
     } = req.body;
-    
 
-    let productpictures=[];
-    if(req.files.length>0)
-    {
-        productpictures=req.files.map(file=>{
-            return {img:file.filename}
+
+    let productpictures = [];
+    if (req.files.length > 0) {
+        productpictures = req.files.map(file => {
+            return { img: file.filename }
         });
     }
 
@@ -31,18 +30,17 @@ exports.createProduct = (req, res) => {
         category: category,
         createdby: req.user._id,
         productpictures,
-        quantity:quantity
+        quantity: quantity
     });
 
-    product.save((error,product)=>{
-       if(error) return res.status(400).json({error})
-       if(product)
-       {
-           res.status(200).json({
-               product
-           })
-       }
-       
+    product.save((error, product) => {
+        if (error) return res.status(400).json({ error })
+        if (product) {
+            res.status(200).json({
+                product
+            })
+        }
+
     });
 }
 
@@ -75,4 +73,36 @@ exports.getAllProductsBySlug = (req, res) => {
 
         );
 }
+
+exports.updateProducts = async (req, res) => {
+
+    let product = await Product.findById(req.params.id);
+    console.log(product)
+    Product.updateOne({ _id: req.params.id },
+        {
+            $set: {
+                name: req.body.name,
+                description: req.body.description,
+                quantity: req.body.quantity,
+                price: req.body.price,
+                category: req.body.category
+            }
+        }, { new: true, upsert: true })
+        .then((message) => { return res.status(200).json({ message: "Update succesfull" }) })
+        .catch((err) => { return res.status(400).json({ error: "Something went wrong" }) })
+
+}
+
+exports.getProductById = async (req, res) => {
+
+    try {
+
+        const product = await Product.findById(req.params.id);
+        return res.status(200).json(product)
+    } catch (error) {
+        return response.status(404).json({ message: error.message })
+    }
+
+}
+
 
